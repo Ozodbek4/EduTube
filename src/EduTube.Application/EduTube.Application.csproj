@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Common\Mappings\" />
+    <Folder Include="Common\Security\" />
+    <Folder Include="Features\Users\Commands\" />
+    <Folder Include="Features\Users\Handlers\" />
+    <Folder Include="Features\Users\DTOs\" />
+    <Folder Include="Features\Users\Queries\" />
+    <Folder Include="Settings\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EduTube.Domain\EduTube.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

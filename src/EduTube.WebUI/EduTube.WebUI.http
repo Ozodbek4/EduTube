@@ -1,0 +1,6 @@
+@EduTube.WebUI_HostAddress = http://localhost:5042
+
+GET {{EduTube.WebUI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
