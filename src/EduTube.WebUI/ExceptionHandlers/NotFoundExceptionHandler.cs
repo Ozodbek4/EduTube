@@ -13,13 +13,7 @@ public class NotFoundExceptionHandler : IExceptionHandler
         httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
         httpContext.Response.ContentType = "application/json";
 
-        var response = new
-        {
-            StatusCode = httpContext.Response.StatusCode,
-            Message = exception.Message
-        };
-
-        await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(exception.Message, cancellationToken);
 
 
         return true;

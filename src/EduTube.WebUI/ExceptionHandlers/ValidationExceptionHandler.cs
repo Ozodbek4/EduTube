@@ -5,14 +5,16 @@ namespace EduTube.WebUI.ExceptionHandlers;
 
 public class ValidationExceptionHandler : IExceptionHandler
 {
-    public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         if (exception is not ValidationException)
-            return new(false);
+            return false;
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         httpContext.Response.ContentType = "application/json";
 
-        return new (true);
+        await httpContext.Response.WriteAsJsonAsync(exception.Message, cancellationToken);
+
+        return true;
     }
 }

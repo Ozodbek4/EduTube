@@ -1,4 +1,5 @@
 ﻿using EduTube.Application.Common.Exceptions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
@@ -10,6 +11,6 @@ public class UserController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        throw new NotFoundException(nameof(User), 1);
+        throw new AlreadyExistException(nameof(User), 1);
     }
 }
