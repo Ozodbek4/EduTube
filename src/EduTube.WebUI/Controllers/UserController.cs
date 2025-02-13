@@ -1,16 +1,24 @@
-﻿using EduTube.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AutoMapper;
+using EduTube.Application.Common.DTOs;
+using EduTube.Application.Features.Users.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
 
+
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    [HttpGet]
-    public IActionResult Get()
+    [HttpPost]
+    public async ValueTask<IActionResult> Post([FromBody] CreateUserDto createUserDto)
     {
-        throw new AlreadyExistException(nameof(User), 1);
+        var command = new CreateUserCommand(createUserDto);
+
+        var userDto = mapper.Map<UserDto>(createUserDto);
+        userDto.Id = await mediator.Send(command);
+
+        return Ok(userDto);
     }
 }
