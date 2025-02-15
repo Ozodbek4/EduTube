@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using System.ComponentModel.DataAnnotations;
+﻿using EduTube.Application.Common.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace EduTube.WebUI.ExceptionHandlers;
 

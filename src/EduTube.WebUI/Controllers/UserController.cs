@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
 
-
-[Route("api/[controller]")]
-[ApiController]
-public class UserController(IMediator mediator, IMapper mapper) : ControllerBase
+public class UserController(IMediator mediator, IMapper mapper) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> Post([FromBody] CreateUserDto createUserDto)

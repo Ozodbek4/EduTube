@@ -1,13 +1,14 @@
-﻿namespace EduTube.Application.Common.Exceptions;
+﻿using FluentValidation.Results;
+
+namespace EduTube.Application.Common.Exceptions;
 
 public class ValidationException : Exception
 {
-    public ValidationException()
-    {
-    }
+    public IEnumerable<ValidationFailure> Errors { get; set; }
 
-    public ValidationException(string message)
-        : base(message)
+    public ValidationException(IEnumerable<ValidationFailure> errors)
+        : base(string.Join(' ', errors.Select(error => error.ErrorMessage)))
     {
+        Errors = errors;
     }
 }

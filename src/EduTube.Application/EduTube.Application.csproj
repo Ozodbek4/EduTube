@@ -10,9 +10,7 @@
     <Folder Include="Common\Behaviors\" />
     <Folder Include="Common\Interfaces\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Common\Security\" />
     <Folder Include="Features\Users\Queries\" />
-    <Folder Include="Settings\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,7 +15,6 @@ public class NotFoundExceptionHandler : IExceptionHandler
 
         await httpContext.Response.WriteAsJsonAsync(exception.Message, cancellationToken);
 
-
         return true;
     }
 }
