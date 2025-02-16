@@ -1,7 +1,7 @@
 ﻿using EduTube.Application.Common.DTOs.Users;
 using FluentValidation;
 
-namespace EduTube.Application.Common.Validators;
+namespace EduTube.Application.Common.Validators.Users;
 
 public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
 {

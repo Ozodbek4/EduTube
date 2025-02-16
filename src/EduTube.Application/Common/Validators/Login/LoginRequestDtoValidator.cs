@@ -1,7 +1,7 @@
 ﻿using EduTube.Application.Common.DTOs.Login;
 using FluentValidation;
 
-namespace EduTube.Application.Common.Validators;
+namespace EduTube.Application.Common.Validators.Login;
 
 public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
 {
