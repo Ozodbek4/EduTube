@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.ExceptionHandlers;
 
@@ -9,7 +10,13 @@ public class InternalServerExceptionHandler(ILogger<InternalServerExceptionHandl
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         httpContext.Response.ContentType = "application/json";
 
-        await httpContext.Response.WriteAsJsonAsync(exception.Message, cancellationToken);
+        var problem = new ProblemDetails
+        {
+            Status = StatusCodes.Status500InternalServerError,
+            Detail = exception.Message,
+        };
+
+        await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
 
         logger.LogError(exception.Message);
 

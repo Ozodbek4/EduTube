@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Features.Users.Commands;
+using EduTube.Domain.Enums;
+using EduTube.WebUI.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
 
+[CustomAuthorize(nameof(UserRole.Client))]
 public class UserController(IMediator mediator, IMapper mapper) : BaseController
 {
     [HttpPost]
@@ -20,10 +24,10 @@ public class UserController(IMediator mediator, IMapper mapper) : BaseController
         return Ok(userDto);
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok();
+        throw new AlreadyExistException("User", "name"););
     }
 }
