@@ -1,20 +1,12 @@
-﻿using EduTube.Application.Common.DTOs.Users;
+﻿using EduTube.Application.Features.Login.Commands;
 using FluentValidation;
 
-namespace EduTube.Application.Common.Validators.Users;
+namespace EduTube.Application.Common.Validators;
 
-public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
+public class LoginRequestCommandValidator : AbstractValidator<LoginCommand>
 {
-    public CreateUserDtoValidator()
+    public LoginRequestCommandValidator()
     {
-        RuleFor(entity => entity.FirstName)
-            .NotNull().NotEmpty().WithMessage("First name is required.")
-            .MaximumLength(100).WithMessage("First name cannot exceed 100 characters.");
-
-        RuleFor(entity => entity.LastName)
-            .NotNull().NotEmpty().WithMessage("Last name is required.")
-            .MaximumLength(100).WithMessage("Last name cannot exceed 100 characters.");
-
         RuleFor(entity => entity.UserName)
             .NotNull().NotEmpty().WithMessage("User name is required.")
             .MinimumLength(6).WithMessage("User name must be at least 6 characters long.")

@@ -1,33 +1,45 @@
 ﻿using AutoMapper;
-using EduTube.Application.Common.DTOs.Users;
-using EduTube.Application.Common.Exceptions;
+using EduTube.Application.Common.DTOs;
 using EduTube.Application.Features.Users.Commands;
-using EduTube.Domain.Enums;
-using EduTube.WebUI.Middlewares;
+using EduTube.Application.Features.Users.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
 
-[CustomAuthorize(nameof(UserRole.Client))]
-public class UserController(IMediator mediator, IMapper mapper) : BaseController
+//[CustomAuthorize(nameof(UserRole.Client))]
+public class UserController(IMediator mediator) : BaseController
 {
-    [HttpPost]
-    public async ValueTask<IActionResult> Post([FromBody] CreateUserDto createUserDto)
+    [HttpGet("{id:long}")]
+    public async ValueTask<IActionResult> GetById([FromRoute] long id)
     {
-        var command = new CreateUserCommand(createUserDto);
-
-        var userDto = mapper.Map<UserDto>(createUserDto);
-        userDto.Id = await mediator.Send(command);
+        var userDto = await mediator.Send(new GetUserByIdQuery(id));
 
         return Ok(userDto);
     }
 
-    [AllowAnonymous]
-    [HttpGet]
-    public IActionResult Get()
+    [HttpPost]
+    public async ValueTask<IActionResult> Post([FromBody] CreateUserCommand command)
     {
-        throw new AlreadyExistException("User", "name");
+        var userDto = await mediator.Send(command);
+
+        return Ok(userDto);
+    }
+
+    [HttpPut("{id:long}")]
+    public async ValueTask<IActionResult> Put([FromRoute] long id, [FromBody] UpdateUserCommand command)
+    {
+        command.Id = id;
+        var userDto = await mediator.Send(command);
+
+        return Ok(userDto);
+    }
+
+    [HttpDelete("{id:long}")]
+    public async ValueTask<IActionResult> Delete([FromRoute] long id)
+    {
+        var result = await mediator.Send(new DeleteUserCommand(id));
+
+        return Ok(result);
     }
 }

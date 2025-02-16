@@ -2,8 +2,7 @@
 using EduTube.Application.Abstractions.Messaging;
 using EduTube.Application.Abstractions.Persistence;
 using EduTube.Application.Abstractions.Security;
-using EduTube.Application.Common.DTOs.Login;
-using EduTube.Application.Common.DTOs.Users;
+using EduTube.Application.Common.DTOs;
 using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Common.Extensions;
 using FluentValidation;
@@ -11,7 +10,7 @@ using FluentValidation;
 namespace EduTube.Application.Features.Login.Commands;
 
 public class LoginCommandHandler(
-    IValidator<LoginRequestDto> validator,
+    IValidator<LoginCommand> validator,
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     ITokenGeneratorService tokenGeneratorService,
@@ -19,13 +18,13 @@ public class LoginCommandHandler(
 {
     public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        await validator.EnsureValidationAsync(request.LoginRequestDto, cancellationToken);
+        await validator.EnsureValidationAsync(request, cancellationToken);
 
-        var existsUser = await userRepository.GetAsync(entity => entity.UserName == request.LoginRequestDto.UserName && !entity.IsDeleted,
+        var existsUser = await userRepository.GetAsync(entity => entity.UserName == request.UserName && !entity.IsDeleted,
             includes: ["Credentials"])
-            ?? throw new NotFoundException(nameof(UserDto), request.LoginRequestDto.UserName);
+            ?? throw new NotFoundException(nameof(UserDto), request.UserName);
 
-        var isMatch = await passwordHasher.VerifyPassword(existsUser.Credentials!.PasswordHash, request.LoginRequestDto.Password);
+        var isMatch = await passwordHasher.VerifyPassword(existsUser.Credentials!.PasswordHash, request.Password);
         if (!isMatch)
             throw new UnauthorizedAccessException($"Invalid password.");
 
