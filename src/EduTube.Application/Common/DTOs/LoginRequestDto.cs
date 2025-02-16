@@ -2,12 +2,8 @@
 
 namespace EduTube.Application.Common.DTOs;
 
-public class CreateUserDto
+public class LoginRequestDto
 {
-    [Required]
-    public string FirstName { get; set; }
-    [Required]
-    public string LastName { get; set; }
     [Required]
     public string UserName { get; set; }
     [Required]

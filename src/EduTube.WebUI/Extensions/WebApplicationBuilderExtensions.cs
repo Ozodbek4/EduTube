@@ -50,6 +50,9 @@ public static class WebApplicationBuilderExtensions
             options.LowercaseUrls = true;
         });
 
+        services.AddAuthentication();
+        services.AddAuthorization();
+
         return services;
     }
 

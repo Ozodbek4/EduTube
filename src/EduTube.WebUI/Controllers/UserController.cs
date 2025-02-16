@@ -2,6 +2,7 @@
 using EduTube.Application.Common.DTOs;
 using EduTube.Application.Features.Users.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTube.WebUI.Controllers;
@@ -17,5 +18,12 @@ public class UserController(IMediator mediator, IMapper mapper) : BaseController
         userDto.Id = await mediator.Send(command);
 
         return Ok(userDto);
+    }
+
+    [Authorize]
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok();
     }
 }

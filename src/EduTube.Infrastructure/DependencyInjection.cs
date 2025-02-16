@@ -70,6 +70,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
 
         return services;
     }
