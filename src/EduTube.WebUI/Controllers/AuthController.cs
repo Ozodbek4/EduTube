@@ -1,4 +1,4 @@
-﻿using EduTube.Application.Common.DTOs;
+﻿using EduTube.Application.Common.DTOs.Login;
 using EduTube.Application.Features.Login.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

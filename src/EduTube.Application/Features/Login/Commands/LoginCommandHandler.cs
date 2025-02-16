@@ -2,7 +2,8 @@
 using EduTube.Application.Abstractions.Messaging;
 using EduTube.Application.Abstractions.Persistence;
 using EduTube.Application.Abstractions.Security;
-using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.DTOs.Login;
+using EduTube.Application.Common.DTOs.Users;
 using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Common.Extensions;
 using FluentValidation;

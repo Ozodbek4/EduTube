@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EduTube.Application.Common.DTOs;
+namespace EduTube.Application.Common.DTOs.Login;
 
 public class LoginRequestDto
 {

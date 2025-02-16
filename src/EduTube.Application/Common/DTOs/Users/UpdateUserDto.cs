@@ -1,12 +1,10 @@
-﻿namespace EduTube.Application.Common.DTOs;
+﻿namespace EduTube.Application.Common.DTOs.Users;
 
-public class UserDto
+public class UpdateUserDto
 {
     public long Id { get; set; }
 
     public string FirstName { get; set; } = default!;
 
     public string LastName { get; set; } = default!;
-
-    public string UserName { get; set; } = default!;
 }

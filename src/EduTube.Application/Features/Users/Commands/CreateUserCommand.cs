@@ -1,5 +1,5 @@
 ﻿using EduTube.Application.Abstractions.Messaging;
-using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.DTOs.Users;
 
 namespace EduTube.Application.Features.Users.Commands;
 

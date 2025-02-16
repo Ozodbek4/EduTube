@@ -1,4 +1,4 @@
-﻿using EduTube.Application.Common.DTOs;
+﻿using EduTube.Application.Common.DTOs.Users;
 using FluentValidation;
 
 namespace EduTube.Application.Common.Validators;

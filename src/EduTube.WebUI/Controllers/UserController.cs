@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.DTOs.Users;
 using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Features.Users.Commands;
 using EduTube.Domain.Enums;

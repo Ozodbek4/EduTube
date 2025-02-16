@@ -1,4 +1,6 @@
-﻿namespace EduTube.Application.Common.DTOs;
+﻿using EduTube.Application.Common.DTOs.Users;
+
+namespace EduTube.Application.Common.DTOs.Login;
 
 public class LoginResponseDto
 {

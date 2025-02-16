@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.DTOs.Users;
 using EduTube.Domain.Entities;
 
 namespace EduTube.Application.Common.Mappings;
