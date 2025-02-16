@@ -1,6 +1,6 @@
 ﻿namespace EduTube.Domain.Common.Entities;
 
-public class AuditableEntity
+public class AuditableEntity : IAuditableEntity
 {
     public long Id { get; set; }
 

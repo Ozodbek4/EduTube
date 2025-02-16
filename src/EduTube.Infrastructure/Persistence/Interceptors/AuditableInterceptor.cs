@@ -8,21 +8,21 @@ public class AuditableInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
-        var auditableEntry = eventData.Context!.ChangeTracker.Entries<AuditableEntity>().ToList();
+        var auditableEntry = eventData.Context!.ChangeTracker.Entries<IAuditableEntity>().ToList();
 
         auditableEntry.ForEach(entry =>
         {
             if (entry.State == EntityState.Added)
-                entry.Property(nameof(AuditableEntity.CreatedAt)).CurrentValue = DateTime.UtcNow;
+                entry.Property(nameof(IAuditableEntity.CreatedAt)).CurrentValue = DateTime.UtcNow;
 
             if (entry.State == EntityState.Modified)
-                entry.Property(nameof(AuditableEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
+                entry.Property(nameof(IAuditableEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
 
             if (entry.State != EntityState.Deleted)
                 return;
 
-            entry.Property(nameof(AuditableEntity.DeletedAt)).CurrentValue = DateTime.UtcNow;
-            entry.Property(nameof(AuditableEntity.IsDeleted)).CurrentValue = true;
+            entry.Property(nameof(IAuditableEntity.DeletedAt)).CurrentValue = DateTime.UtcNow;
+            entry.Property(nameof(IAuditableEntity.IsDeleted)).CurrentValue = true;
             entry.State = EntityState.Modified;
         });
 

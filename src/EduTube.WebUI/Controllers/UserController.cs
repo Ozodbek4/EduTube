@@ -28,6 +28,6 @@ public class UserController(IMediator mediator, IMapper mapper) : BaseController
     [HttpGet]
     public IActionResult Get()
     {
-        throw new AlreadyExistException("User", "name"););
+        throw new AlreadyExistException("User", "name");
     }
 }
