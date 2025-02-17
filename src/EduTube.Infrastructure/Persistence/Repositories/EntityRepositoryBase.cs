@@ -1,77 +1,98 @@
-﻿using EduTube.Application.Common.Extensions;
-using EduTube.Application.Common.Models;
-using EduTube.Domain.Common.Entities;
-using EduTube.Domain.Entities;
+﻿using EduTube.Domain.Common.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace EduTube.Infrastructure.Persistence.Repositories;
 
-public abstract class EntityRepositoryBase<TEntity, TContext>(DbContext dbContext)
+public abstract class EntityRepositoryBase<TEntity, TContext>
     where TEntity : AuditableEntity
     where TContext : DbContext
 {
-    protected DbContext DbContext => dbContext;
+    protected readonly DbContext DbContext;
 
-    public IQueryable<User> GetQueryable(
-        Expression<Func<User, bool>>? predicate = default,
+    public EntityRepositoryBase(DbContext dbContext) =>
+        DbContext = dbContext;
+
+    protected IQueryable<TEntity> GetQueryable(
+        Expression<Func<TEntity, bool>>? predicate = default,
         string[]? includes = default,
         bool asNoTracking = true
         )
     {
-        var initialQuery = predicate is null 
-            ? DbContext.Set<User>() : DbContext.Set<User>().Where(predicate);
+        var query = predicate is null
+            ? DbContext.Set<TEntity>()
+            : DbContext.Set<TEntity>().Where(predicate);
 
         if (includes is not null)
             foreach (var include in includes)
-                initialQuery = initialQuery.Include(include);
+                query = query.Include(include);
 
         if (asNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
+            query = query.AsNoTracking();
 
-        return initialQuery;
+        return query;
     }
 
-    public async Task<TEntity?> GetAsync(
+    protected async Task<IEnumerable<TEntity>> GetEnumerableAsync(
+        Expression<Func<TEntity, bool>>? predicate = default,
+        string[]? includes = default,
+        bool asNoTracking = true,
+        CancellationToken cancellationToken = default
+        )
+    {
+        var query = predicate is null
+            ? DbContext.Set<TEntity>()
+            : DbContext.Set<TEntity>().Where(predicate);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                query = query.Include(include);
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+    protected async Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
         string[]? includes = default,
         bool asNoTracking = true,
         CancellationToken cancellationToken = default)
     {
-        var initialQuery = DbContext.Set<TEntity>().AsQueryable();
+        var query = DbContext.Set<TEntity>().AsQueryable();
 
         if (includes is not null)
             foreach (var include in includes)
-                initialQuery = initialQuery.Include(include);
+                query = query.Include(include);
 
         if (asNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
+            query = query.AsNoTracking();
 
-        return await initialQuery.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await query.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    protected async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var initialQuery = DbContext.Set<TEntity>();
+        var query = DbContext.Set<TEntity>();
 
-        await initialQuery.AddAsync(entity, cancellationToken);
+        return (await query.AddAsync(entity, cancellationToken)).Entity;
     }
 
-    public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    protected Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var initialQuery = DbContext.Set<TEntity>();
+        var query = DbContext.Set<TEntity>();
 
-        initialQuery.Update(entity);
-
-        return Task.CompletedTask;
+        return Task.FromResult(query.Update(entity).Entity);
     }
 
-    public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
+    protected Task<TEntity> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var initialQuery = DbContext.Set<TEntity>();
+        var query = DbContext.Set<TEntity>();
 
-        initialQuery.Remove(entity);
-
-        return Task.CompletedTask;
+        return Task.FromResult(query.Remove(entity).Entity);
     }
+
+    protected Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
+        DbContext.SaveChangesAsync(cancellationToken);
 }

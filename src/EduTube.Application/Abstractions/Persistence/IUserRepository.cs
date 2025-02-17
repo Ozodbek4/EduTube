@@ -7,16 +7,13 @@ namespace EduTube.Application.Abstractions.Persistence;
 public interface IUserRepository
 {
     IQueryable<User> GetQueryable(
-        Expression<Func<User, bool>> predicate,
+        Expression<Func<User, bool>>? predicate = default,
         string[]? includes = default,
         bool asNoTracking = true
-        ); 
+        );
 
-    Task<PaginationResult<User>> GetEnumerableAsync(
+    Task<IEnumerable<User>> GetEnumerableAsync(
         Expression<Func<User, bool>>? predicate = default,
-        PaginationParameters? pagination = default,
-        SortingParameters? sorting = default,
-        string? search = null,
         string[]? includes = default,
         bool asNoTracking = true,
         CancellationToken cancellationToken = default
@@ -29,9 +26,11 @@ public interface IUserRepository
         CancellationToken cancellationToken = default
         );
 
-    Task AddAsync(User user, CancellationToken cancellationToken = default);
+    Task<User> AddAsync(User user, CancellationToken cancellationToken = default);
 
-    Task UpdateAsync(User user, CancellationToken cancellationToken = default);
+    Task<User> UpdateAsync(User user, CancellationToken cancellationToken = default);
 
-    Task RemoveAsync(User user, CancellationToken cancellationToken = default);
+    Task<User> RemoveAsync(User user, CancellationToken cancellationToken = default);
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

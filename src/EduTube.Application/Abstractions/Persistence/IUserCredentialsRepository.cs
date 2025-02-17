@@ -4,9 +4,11 @@ namespace EduTube.Application.Abstractions.Persistence;
 
 public interface IUserCredentialsRepository
 {
-    Task AddAsync(UserCredentials credentials, CancellationToken cancellationToken = default);
+    Task<UserCredentials> AddAsync(UserCredentials userCredentials, CancellationToken cancellationToken = default);
 
-    Task UpdateAsync(UserCredentials credentials, CancellationToken cancellationToken = default);
+    Task<UserCredentials> UpdateAsync(UserCredentials userCredentials, CancellationToken cancellationToken = default);
 
-    Task RemoveAsync(UserCredentials credentials, CancellationToken cancellationToken = default);
+    Task<UserCredentials> RemoveAsync(UserCredentials userCredentials, CancellationToken cancellationToken = default);
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

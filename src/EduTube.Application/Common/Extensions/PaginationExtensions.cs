@@ -1,5 +1,4 @@
 ﻿using EduTube.Application.Common.Models;
-using Newtonsoft.Json;
 
 namespace EduTube.Application.Common.Extensions;
 

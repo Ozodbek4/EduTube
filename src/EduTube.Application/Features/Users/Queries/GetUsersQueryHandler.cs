@@ -2,8 +2,8 @@
 using EduTube.Application.Abstractions.Messaging;
 using EduTube.Application.Abstractions.Persistence;
 using EduTube.Application.Common.DTOs;
+using EduTube.Application.Common.Extensions;
 using EduTube.Application.Common.Models;
-using EduTube.Domain.Entities;
 
 namespace EduTube.Application.Features.Users.Queries;
 
@@ -11,12 +11,17 @@ public class GetUsersQueryHandler(IUserRepository userRepository, IMapper mapper
 {
     public async Task<PaginationResult<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var exists = await userRepository.GetEnumerableAsync(pagination: request.Pagination,
-            sorting: request.Sorting,
-            search: request.Search,
-            asNoTracking: true,
-            cancellationToken: cancellationToken);
+        var exists = userRepository.GetQueryable();
 
-        return mapper.Map<PaginationResult<UserDto>>(exists);
+        if (!string.IsNullOrEmpty(request.Search))
+            exists = exists.Where(entity => entity.FirstName.ToLower().Contains(request.Search.ToLower())
+                || entity.LastName.ToLower().Contains(request.Search.ToLower())
+                || entity.UserName.ToLower().Contains(request.Search.ToLower()));
+
+        exists = exists.Where(entity => !entity.IsDeleted);
+
+        exists.SortBy(request.Sorting);
+
+        return mapper.Map<PaginationResult<UserDto>>(exists.ToPaginate(request.Pagination));
     }
 }

@@ -37,9 +37,10 @@ public static class WebApplicationBuilderExtensions
     private static IServiceCollection AddExposers(this IServiceCollection services)
     {
         services.AddProblemDetails();
+        services.AddExceptionHandler<AlreadyExistsExceptionHandler>();
+        services.AddExceptionHandler<ArgumentIsNotValidExceptionHandler>();
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddExceptionHandler<NotFoundExceptionHandler>();
-        services.AddExceptionHandler<AlreadyExistsExceptionHandler>();
         services.AddExceptionHandler<ValidationExceptionHandler>();
         services.AddExceptionHandler<InternalServerExceptionHandler>();
 

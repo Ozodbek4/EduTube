@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using EduTube.Application.Common.DTOs;
-using EduTube.Application.Common.Models;
+﻿using EduTube.Application.Common.Models;
 using EduTube.Application.Features.Users.Commands;
 using EduTube.Application.Features.Users.Queries;
 using EduTube.WebUI.Extensions;
