@@ -1,4 +1,7 @@
-﻿using EduTube.Domain.Common.Entities;
+﻿using EduTube.Application.Common.Extensions;
+using EduTube.Application.Common.Models;
+using EduTube.Domain.Common.Entities;
+using EduTube.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -9,6 +12,25 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(DbContext dbContex
     where TContext : DbContext
 {
     protected DbContext DbContext => dbContext;
+
+    public IQueryable<User> GetQueryable(
+        Expression<Func<User, bool>>? predicate = default,
+        string[]? includes = default,
+        bool asNoTracking = true
+        )
+    {
+        var initialQuery = predicate is null 
+            ? DbContext.Set<User>() : DbContext.Set<User>().Where(predicate);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                initialQuery = initialQuery.Include(include);
+
+        if (asNoTracking)
+            initialQuery = initialQuery.AsNoTracking();
+
+        return initialQuery;
+    }
 
     public async Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
@@ -25,7 +47,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(DbContext dbContex
         if (asNoTracking)
             initialQuery = initialQuery.AsNoTracking();
 
-        return await initialQuery.FirstOrDefaultAsync(predicate);
+        return await initialQuery.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
