@@ -4,16 +4,14 @@ using EduTube.Application.Abstractions.Persistence;
 using EduTube.Application.Common.DTOs;
 using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Common.Extensions;
-using EduTube.Application.Features.Users.Queries;
 using EduTube.Domain.Entities;
 using FluentValidation;
-using MediatR;
 
 namespace EduTube.Application.Features.Users.Commands;
 
 public class UpdateUserCommandHandler(IUnitOfWork unitOfWork,
     IMapper mapper,
-    IValidator<UpdateUserCommand> validator): ICommandHandler<UpdateUserCommand, UserDto>
+    IValidator<UpdateUserCommand> validator) : ICommandHandler<UpdateUserCommand, UserDto>
 {
     public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
