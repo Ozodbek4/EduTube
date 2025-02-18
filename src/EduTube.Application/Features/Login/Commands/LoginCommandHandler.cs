@@ -5,6 +5,7 @@ using EduTube.Application.Abstractions.Security;
 using EduTube.Application.Common.DTOs;
 using EduTube.Application.Common.Exceptions;
 using EduTube.Application.Common.Extensions;
+using EduTube.Domain.Entities;
 using FluentValidation;
 
 namespace EduTube.Application.Features.Login.Commands;
@@ -22,7 +23,7 @@ public class LoginCommandHandler(
 
         var existsUser = await userRepository.GetAsync(entity => entity.UserName == request.UserName && !entity.IsDeleted,
             includes: ["Credentials"])
-            ?? throw new NotFoundException(nameof(UserDto), request.UserName);
+            ?? throw new NotFoundException(nameof(User), request.UserName);
 
         var isMatch = await passwordHasher.VerifyPassword(existsUser.Credentials!.PasswordHash, request.Password);
         if (!isMatch)

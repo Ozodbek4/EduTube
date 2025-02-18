@@ -20,7 +20,7 @@ public class UpdateUserNameCommandHandler(
         var exists = await unitOfWork.Users.GetAsync(entity => entity.UserName == request.CurrentUserName && !entity.IsDeleted,
             includes: ["Credentials"],
             asNoTracking: false,
-            cancellationToken)
+            cancellationToken: cancellationToken)
             ?? throw new NotFoundException(nameof(User), request.CurrentUserName);
 
         bool isMatch = await passwordHasher.VerifyPassword(exists.Credentials!.PasswordHash, request.Password);
