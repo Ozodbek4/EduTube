@@ -1,6 +1,5 @@
 ﻿using EduTube.Application.Abstractions.Messaging;
 using EduTube.Application.Common.DTOs;
-using System.ComponentModel.DataAnnotations;
 
 namespace EduTube.Application.Features.Login.Commands;
 
